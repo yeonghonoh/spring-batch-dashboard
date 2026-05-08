@@ -54,14 +54,8 @@ spring:
   application:
     name: spring-batch-dashboard
   datasource:
-    driver-class-name: org.postgresql.Driver
     hikari:
       connection-timeout: 2000
-      data-source-properties:
-        cancelSignalTimeout: 2
-        connectTimeout: 2
-        loginTimeout: 2
-        socketTimeout: 10
       login-timeout: 2
       maximum-pool-size: 8
       minimum-idle: 1
@@ -77,10 +71,6 @@ spring:
       name: admin
       password: secret
       roles: ADMIN
-  sql:
-    init:
-      mode: never
-      schema-locations: https://github.com/spring-projects/spring-batch/raw/refs/heads/main/spring-batch-core/src/main/resources/org/springframework/batch/core/schema-postgresql.sql
   threads:
     virtual:
       enabled: true

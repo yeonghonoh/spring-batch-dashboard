@@ -28,7 +28,7 @@ public class JobMapperDatasourceConfig implements InitializingBean {
 	private final String driverClassName;
 
 	public JobMapperDatasourceConfig(DataSourceProperties dataSourceProperties) {
-		this.driverClassName = dataSourceProperties.getDriverClassName();
+		this.driverClassName = dataSourceProperties.determineDriverClassName();
 	}
 
 	@Override
