@@ -1,5 +1,14 @@
-package am.ik.spring.batch.dashboard.job;
+package am.ik.spring.batch.dashboard.job.mapper.postgres;
 
+import am.ik.spring.batch.dashboard.job.DailyJobStats;
+import am.ik.spring.batch.dashboard.job.JobExecutionStats;
+import am.ik.spring.batch.dashboard.job.JobSpecificStatistics;
+import am.ik.spring.batch.dashboard.job.JobSpecificStatisticsBuilder;
+import am.ik.spring.batch.dashboard.job.JobStatistics;
+import am.ik.spring.batch.dashboard.job.JobStatisticsBuilder;
+import am.ik.spring.batch.dashboard.job.JobStatus;
+import am.ik.spring.batch.dashboard.job.mapper.JobStatisticsMapper;
+import am.ik.spring.batch.dashboard.job.mapper.StatusCount;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
@@ -10,21 +19,24 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class JobStatisticsMapper {
+@ConditionalOnProperty(name = "spring.datasource.driver-class-name", havingValue = "org.postgresql.Driver")
+public class PostgresJobStatisticsMapper implements JobStatisticsMapper {
 
 	private final JdbcClient jdbcClient;
 
 	private final ObjectMapper objectMapper;
 
-	public JobStatisticsMapper(JdbcClient jdbcClient, ObjectMapper objectMapper) {
+	public PostgresJobStatisticsMapper(JdbcClient jdbcClient, ObjectMapper objectMapper) {
 		this.jdbcClient = jdbcClient;
 		this.objectMapper = objectMapper;
 	}
 
+	@Override
 	public JobStatistics getJobStatistics(int days) {
 		return this.jdbcClient.sql("""
 				WITH job_stats AS (
@@ -110,6 +122,7 @@ public class JobStatisticsMapper {
 		}).single();
 	}
 
+	@Override
 	public Optional<JobSpecificStatistics> getJobStatisticsByJobName(String jobName) {
 		return this.jdbcClient.sql("""
 				WITH job_data AS (
@@ -186,6 +199,7 @@ public class JobStatisticsMapper {
 		}).optional();
 	}
 
+	@Override
 	public List<JobExecutionStats> getJobExecutionStats(int days) {
 		return this.jdbcClient.sql("""
 				SELECT
@@ -204,9 +218,6 @@ public class JobStatisticsMapper {
 				    executions DESC,
 				    jobName
 				""".formatted(days)).query(JobExecutionStats.class).list();
-	}
-
-	public record StatusCount(JobStatus status, Long count) {
 	}
 
 }

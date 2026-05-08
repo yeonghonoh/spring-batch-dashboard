@@ -1,7 +1,7 @@
 package am.ik.spring.batch.dashboard.job.web;
 
 import am.ik.spring.batch.dashboard.job.ApiErrorBuilder;
-import am.ik.spring.batch.dashboard.job.JobExecutionMapper;
+import am.ik.spring.batch.dashboard.job.mapper.JobExecutionMapper;
 import am.ik.spring.batch.dashboard.job.JobExecutionsParams;
 import java.time.Clock;
 import java.time.LocalDateTime;

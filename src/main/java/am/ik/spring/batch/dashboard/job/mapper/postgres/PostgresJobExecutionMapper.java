@@ -1,22 +1,35 @@
-package am.ik.spring.batch.dashboard.job;
+package am.ik.spring.batch.dashboard.job.mapper.postgres;
 
+import am.ik.spring.batch.dashboard.job.JobExecution;
+import am.ik.spring.batch.dashboard.job.JobExecutionDetail;
+import am.ik.spring.batch.dashboard.job.JobExecutionDetailBuilder;
+import am.ik.spring.batch.dashboard.job.JobExecutionsParams;
+import am.ik.spring.batch.dashboard.job.JobParameter;
+import am.ik.spring.batch.dashboard.job.JobStatus;
+import am.ik.spring.batch.dashboard.job.PageResponse;
+import am.ik.spring.batch.dashboard.job.PageResponseBuilder;
+import am.ik.spring.batch.dashboard.job.StepExecutionSummary;
+import am.ik.spring.batch.dashboard.job.mapper.JobExecutionMapper;
 import java.sql.Types;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class JobExecutionMapper {
+@ConditionalOnProperty(name = "spring.datasource.driver-class-name", havingValue = "org.postgresql.Driver")
+public class PostgresJobExecutionMapper implements JobExecutionMapper {
 
 	private final JdbcClient jdbcClient;
 
-	public JobExecutionMapper(JdbcClient jdbcClient) {
+	public PostgresJobExecutionMapper(JdbcClient jdbcClient) {
 		this.jdbcClient = jdbcClient;
 	}
 
+	@Override
 	public PageResponse<JobExecution> findJobExecutions(JobExecutionsParams params) {
 		Integer page = Objects.requireNonNullElse(params.page(), 0);
 		Integer size = Objects.requireNonNullElse(params.size(), 20);
@@ -106,6 +119,7 @@ public class JobExecutionMapper {
 			.build();
 	}
 
+	@Override
 	public Optional<JobExecutionDetail> getJobExecutionDetail(long jobExecutionId) {
 		Optional<JobExecutionDetail> jobExecutionDetail = jdbcClient.sql("""
 				SELECT

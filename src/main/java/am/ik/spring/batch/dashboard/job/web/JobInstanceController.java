@@ -1,6 +1,6 @@
 package am.ik.spring.batch.dashboard.job.web;
 
-import am.ik.spring.batch.dashboard.job.JobInstanceMapper;
+import am.ik.spring.batch.dashboard.job.mapper.JobInstanceMapper;
 import am.ik.spring.batch.dashboard.job.JobInstancesParams;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

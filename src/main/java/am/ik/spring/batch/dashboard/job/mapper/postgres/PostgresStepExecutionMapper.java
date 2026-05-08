@@ -1,18 +1,23 @@
-package am.ik.spring.batch.dashboard.job;
+package am.ik.spring.batch.dashboard.job.mapper.postgres;
 
+import am.ik.spring.batch.dashboard.job.StepExecutionDetail;
+import am.ik.spring.batch.dashboard.job.mapper.StepExecutionMapper;
 import java.util.Optional;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class StepExecutionMapper {
+@ConditionalOnProperty(name = "spring.datasource.driver-class-name", havingValue = "org.postgresql.Driver")
+public class PostgresStepExecutionMapper implements StepExecutionMapper {
 
 	private final JdbcClient jdbcClient;
 
-	public StepExecutionMapper(JdbcClient jdbcClient) {
+	public PostgresStepExecutionMapper(JdbcClient jdbcClient) {
 		this.jdbcClient = jdbcClient;
 	}
 
+	@Override
 	public Optional<StepExecutionDetail> getStepExecutionDetail(long stepExecutionId) {
 		return this.jdbcClient.sql("""
 				SELECT
