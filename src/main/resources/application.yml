@@ -1,0 +1,91 @@
+logbook:
+  strategy: body-only-if-status-at-least
+
+logging:
+  level:
+    am.ik.spring.batch.dashboard.SpringBatchDashboardApplication: debug
+    sql: info
+    web: info
+    org.springframework.security: info
+
+management:
+  endpoint:
+    health:
+      probes:
+        add-additional-paths: true
+        enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: info,health,prometheus
+  info:
+    env:
+      enabled: true
+    git:
+      mode: full
+    java:
+      enabled: true
+    os:
+      enabled: true
+  observations:
+    enable:
+      spring:
+        security: false
+  otlp:
+    metrics:
+      export:
+        enabled: false
+    tracing:
+      export:
+        enabled: false
+  tracing:
+    sampling:
+      probability: 1.0
+
+server:
+  compression:
+    enabled: true
+  error:
+    include-message: always
+  http2:
+    enabled: true
+
+spring:
+  application:
+    name: spring-batch-dashboard
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      connection-timeout: 2000
+      data-source-properties:
+        cancelSignalTimeout: 2
+        connectTimeout: 2
+        loginTimeout: 2
+        socketTimeout: 10
+      login-timeout: 2
+      maximum-pool-size: 8
+      minimum-idle: 1
+  docker:
+    compose:
+      enabled: false
+  mustache:
+    servlet:
+      expose-request-attributes: true
+      expose-session-attributes: true
+  security:
+    user:
+      name: admin
+      password: secret
+      roles: ADMIN
+  sql:
+    init:
+      mode: never
+      schema-locations: https://github.com/spring-projects/spring-batch/raw/refs/heads/main/spring-batch-core/src/main/resources/org/springframework/batch/core/schema-postgresql.sql
+  threads:
+    virtual:
+      enabled: true
+  web:
+    resources:
+      cache:
+        period: 365d
+        use-last-modified: false
