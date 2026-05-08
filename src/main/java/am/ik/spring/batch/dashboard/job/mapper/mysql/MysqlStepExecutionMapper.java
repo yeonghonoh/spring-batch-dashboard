@@ -3,12 +3,8 @@ package am.ik.spring.batch.dashboard.job.mapper.mysql;
 import am.ik.spring.batch.dashboard.job.StepExecutionDetail;
 import am.ik.spring.batch.dashboard.job.mapper.StepExecutionMapper;
 import java.util.Optional;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.jdbc.core.simple.JdbcClient;
-import org.springframework.stereotype.Repository;
 
-@Repository
-@ConditionalOnProperty(name = "spring.datasource.driver-class-name", havingValue = "com.mysql.cj.jdbc.Driver")
 public class MysqlStepExecutionMapper implements StepExecutionMapper {
 
 	private final JdbcClient jdbcClient;

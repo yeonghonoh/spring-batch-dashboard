@@ -3,12 +3,8 @@ package am.ik.spring.batch.dashboard.job.mapper.postgres;
 import am.ik.spring.batch.dashboard.job.StepExecutionDetail;
 import am.ik.spring.batch.dashboard.job.mapper.StepExecutionMapper;
 import java.util.Optional;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.jdbc.core.simple.JdbcClient;
-import org.springframework.stereotype.Repository;
 
-@Repository
-@ConditionalOnProperty(name = "spring.datasource.driver-class-name", havingValue = "org.postgresql.Driver")
 public class PostgresStepExecutionMapper implements StepExecutionMapper {
 
 	private final JdbcClient jdbcClient;
